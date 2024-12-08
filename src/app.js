@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Chess, SQUARES } from "chess.js";
 import { Chessground } from "chessground";
+import { resizeHandle } from "./resize.js";
 
 
 function toDests(chess) {
@@ -70,6 +71,9 @@ const config = {
         color: "white",
         free: false,
         dests: toDests(chess),
+    },
+    events: {
+        insert(elements) { resizeHandle(elements); }
     }
 };
 
