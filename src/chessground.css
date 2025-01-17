@@ -13,7 +13,6 @@ body {
 .board-wrapper {
     width: calc(var(---board-scale) * 40rem);
     aspect-ratio: 1 / 1;
-    margin: 2vh auto;
 }
 
 .cg-wrap {
