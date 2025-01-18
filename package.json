@@ -8,9 +8,11 @@
     "license": "GPL-3.0",
     "scripts": {
         "start": "parcel",
-        "build": "parcel build"
+        "build": "parcel build",
+        "clean": "rm -rf .parcel-cache/ && rm -rf dist/"
     },
     "dependencies": {
+        "alpinejs": "^3.14.8",
         "axios": "^1.7.8",
         "chess.js": "^0.13.4",
         "chessground": "^9.1.1"

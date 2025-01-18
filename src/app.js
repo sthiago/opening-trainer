@@ -1,4 +1,5 @@
 import axios from "axios";
+import Alpine from "alpinejs";
 import { Chess, SQUARES } from "chess.js";
 import { Chessground } from "chessground";
 import { resizeHandle } from "./resize.js";
@@ -85,4 +86,16 @@ ground.set({
             after: lichessOpeningPlay(ground, chess, 1000, false)
         }
     }
-})
+});
+
+
+document.addEventListener("alpine:init", () => {
+
+    Alpine.data("state", () => ({
+        selectedDatabase: "lichess",
+        selectedTimeControls: [ "blitz", "rapid", "classical" ],
+        selectedRatings: [ "1600", "1800", "2000" ],
+    }));
+});
+
+Alpine.start();

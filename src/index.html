@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div class="main-wrapper flex flex-row justify-center gap-2 m-4">
+    <div class="main-wrapper flex flex-row justify-center gap-2 m-4" x-data="state">
       <div class="board-wrapper pl-[3px] pb-[3px] ">
         <div id="chessground" class="blue merida"></div>
       </div>
@@ -24,29 +24,81 @@
         <div class="database-selector mb-2">
           <div>Database</div>
           <div class="flex flex-row flex-wrap m-0">
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Masters</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Lichess</span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedDatabase == 'masters' && 'border border-slate-900'">
+              Masters
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedDatabase == 'lichess' && 'border border-slate-900'">
+              Lichess
+            </span>
           </div>
         </div>
         <div class="time-control-selector mb-2">
           <div>Time control</div>
           <div class="flex flex-row flex-wrap m-0">
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Blitz</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Rapid</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Classical</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">Correspondence</span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedTimeControls.includes('blitz') && 'border border-slate-900'">
+              Blitz
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedTimeControls.includes('rapid') && 'border border-slate-900'">
+              Rapid
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedTimeControls.includes('classical') && 'border border-slate-900'">
+              Classical
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedTimeControls.includes('correspondence') && 'border border-slate-900'">
+              Correspondence
+            </span>
           </div>
         </div>
         <div class="rating-selector mb-2">
           <div>Average rating</div>
           <div class="flex flex-row flex-wrap m-0">
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">1200</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">1400</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">1600</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">1800</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">2000</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">2200</span>
-            <span class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer">2500</span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('1200') && 'border border-slate-900'">
+              1200
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('1400') && 'border border-slate-900'">
+              1400
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('1600') && 'border border-slate-900'">
+              1600
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('1800') && 'border border-slate-900'">
+              1800
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('2000') && 'border border-slate-900'">
+              2000
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('2200') && 'border border-slate-900'">
+              2200
+            </span>
+            <span
+              class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+              :class="selectedRatings.includes('2500') && 'border border-slate-900'">
+              2500
+            </span>
           </div>
         </div>
 
