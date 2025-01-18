@@ -92,6 +92,7 @@ ground.set({
 document.addEventListener("alpine:init", () => {
 
     Alpine.data("state", () => ({
+        showSettings: false,
         selectedDatabase: "lichess",
         selectedTimeControls: [ "blitz", "rapid", "classical" ],
         selectedRatings: [ "1600", "1800", "2000" ],
