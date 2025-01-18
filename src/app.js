@@ -102,6 +102,11 @@ Alpine.store("settings", {
     selectedTimeControls: [ "blitz", "rapid", "classical" ],
     selectedRatings: [ "1600", "1800", "2000" ],
 
+    toggleSettings() {
+        this.showSettings = !this.showSettings;
+        ground.redrawAll();
+    },
+
     async selectColor(color) {
         this.playerColor = color;
 
@@ -112,6 +117,12 @@ Alpine.store("settings", {
         if (ground.state.orientation != ground.state.turnColor) {
             await lichessOpeningPlay(ground, chess, 500)()
         }
+        ground.redrawAll();
+    },
+
+    selectDatabase(database) {
+        this.selectedDatabase = database;
+        ground.redrawAll();
     },
 
     toggleTimeControl(timeControl) {
@@ -121,6 +132,7 @@ Alpine.store("settings", {
         } else {
             this.selectedTimeControls.push(timeControl);
         }
+        ground.redrawAll();
     },
 
     toggleRating(rating) {
@@ -130,6 +142,7 @@ Alpine.store("settings", {
         } else {
             this.selectedRatings.push(rating);
         }
+        ground.redrawAll();
     }
 });
 Alpine.start();
