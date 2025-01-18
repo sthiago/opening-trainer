@@ -45,7 +45,13 @@ function getWeightedRandomMove(data) {
 function lichessOpeningPlay(cg, chess, delay, firstMove) {
     return async (orig, dest) => {
         chess.move({from: orig, to: dest});
-        const response = await axios.get(`https://explorer.lichess.ovh/lichess?variant=standard&fen=${chess.fen()}&speeds=classical,rapid,blitz&ratings=1600,1800,2000,2200,2500`);
+
+        const database = Alpine.store("settings").selectedDatabase;
+        const speeds = Alpine.store("settings").selectedTimeControls.join(",");
+        const ratings = Alpine.store("settings").selectedRatings.join(",");
+        const explorerUrl = `https://explorer.lichess.ovh/${database}?variant=standard&fen=${chess.fen()}` + (database === "lichess" ? `&speeds=${speeds}&ratings=${ratings}` : "");
+
+        const response = await axios.get(explorerUrl);
         const move = getWeightedRandomMove(response.data);
         if (move !== undefined) {
             chess.move(move.san);
