@@ -89,14 +89,28 @@ ground.set({
 });
 
 
-document.addEventListener("alpine:init", () => {
+Alpine.store("settings", {
+    showSettings: false,
+    selectedDatabase: "lichess",
+    selectedTimeControls: [ "blitz", "rapid", "classical" ],
+    selectedRatings: [ "1600", "1800", "2000" ],
 
-    Alpine.data("state", () => ({
-        showSettings: false,
-        selectedDatabase: "lichess",
-        selectedTimeControls: [ "blitz", "rapid", "classical" ],
-        selectedRatings: [ "1600", "1800", "2000" ],
-    }));
+    toggleTimeControl(timeControl) {
+        const index = this.selectedTimeControls.indexOf(timeControl);
+        if (index > -1) {
+            this.selectedTimeControls.splice(index, 1);
+        } else {
+            this.selectedTimeControls.push(timeControl);
+        }
+    },
+
+    toggleRating(rating) {
+        const index = this.selectedRatings.indexOf(rating);
+        if (index > -1) {
+            this.selectedRatings.splice(index, 1);
+        } else {
+            this.selectedRatings.push(rating);
+        }
+    }
 });
-
 Alpine.start();
