@@ -97,9 +97,22 @@ ground.set({
 
 Alpine.store("settings", {
     showSettings: false,
+    playerColor: "white",
     selectedDatabase: "lichess",
     selectedTimeControls: [ "blitz", "rapid", "classical" ],
     selectedRatings: [ "1600", "1800", "2000" ],
+
+    async selectColor(color) {
+        this.playerColor = color;
+
+        ground.set({
+            orientation: this.playerColor
+        });
+
+        if (ground.state.orientation != ground.state.turnColor) {
+            await lichessOpeningPlay(ground, chess, 500)()
+        }
+    },
 
     toggleTimeControl(timeControl) {
         const index = this.selectedTimeControls.indexOf(timeControl);

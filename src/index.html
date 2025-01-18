@@ -24,6 +24,23 @@
           <span class="mx-1" x-show="$store.settings.showSettings">Settings</span>
         </div>
         <div class="actual-settings" x-show="$store.settings.showSettings">
+          <div class="color-selector mb-2">
+            <div>Play as</div>
+            <div class="flex flex-row flex-wrap m-0">
+              <span
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+                :class="$store.settings.playerColor == 'white' && 'border border-slate-900'"
+                @click="await $store.settings.selectColor('white')">
+                White
+              </span>
+              <span
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
+                :class="$store.settings.playerColor == 'black' && 'border border-slate-900'"
+                @click="await $store.settings.selectColor('black')">
+                Black
+              </span>
+            </div>
+          </div>
           <div class="database-selector mb-2">
             <div>Database</div>
             <div class="flex flex-row flex-wrap m-0">
