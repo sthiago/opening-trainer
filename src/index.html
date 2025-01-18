@@ -41,7 +41,7 @@
               </span>
             </div>
           </div>
-          <div class="time-control-selector mb-2">
+          <div class="time-control-selector mb-2" x-show="$store.settings.selectedDatabase == 'lichess'">
             <div>Time control</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
@@ -70,7 +70,7 @@
               </span>
             </div>
           </div>
-          <div class="rating-selector mb-2">
+          <div class="rating-selector mb-2" x-show="$store.settings.selectedDatabase == 'lichess'">
             <div>Average rating</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
