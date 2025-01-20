@@ -45,6 +45,7 @@ function getWeightedRandomMove(data) {
 function lichessOpeningPlay(cg, chess, delay, firstMove) {
     return async (orig, dest) => {
         chess.move({from: orig, to: dest});
+        cg.set({ check: chess.in_check() });
 
         const database = Alpine.store("settings").selectedDatabase;
         const speeds = Alpine.store("settings").selectedTimeControls.join(",");
@@ -58,6 +59,7 @@ function lichessOpeningPlay(cg, chess, delay, firstMove) {
             cg.move(move.from, move.to);
             cg.set({
                 turnColor: toColor(chess),
+                check: chess.in_check(),
                 movable: {
                     color: toColor(chess),
                     dests: toDests(chess)
@@ -78,6 +80,17 @@ const config = {
         color: "white",
         free: false,
         dests: toDests(chess),
+        showDests: true,
+    },
+    highlight: {
+        lastMove: true,
+        check: true,
+    },
+    premovable: {
+        enabled: false,
+    },
+    drawable: {
+        enabled: true,
     },
     events: {
         insert(elements) { resizeHandle(elements); }
@@ -101,6 +114,13 @@ Alpine.store("settings", {
     selectedDatabase: "lichess",
     selectedTimeControls: [ "blitz", "rapid", "classical" ],
     selectedRatings: [ "1600", "1800", "2000" ],
+
+    showCoordinates: false,
+    showPossibleMoves: true,
+    highlightLastMove: true,
+    highlightChecks: true,
+    allowPremoves: false,
+    allowDrawing: true,
 
     toggleSettings() {
         this.showSettings = !this.showSettings;
@@ -143,6 +163,46 @@ Alpine.store("settings", {
             this.selectedRatings.push(rating);
         }
         ground.redrawAll();
+    },
+
+    toggleShowCoordinates() {
+        this.showCoordinates = !this.showCoordinates;
+        ground.set({ coordinates: this.showCoordinates });
+        ground.redrawAll();
+    },
+
+    toggleShowPossibleMoves() {
+        this.showPossibleMoves = !this.showPossibleMoves;
+        ground.set({ movable: { showDests: this.showPossibleMoves } });
+        ground.redrawAll();
+    },
+
+    toggleHighlightLastMove() {
+        this.highlightLastMove = !this.highlightLastMove;
+        ground.set({ highlight: { lastMove: this.highlightLastMove } });
+        ground.redrawAll();
+    },
+
+    toggleHighlightChecks() {
+        this.highlightChecks = !this.highlightChecks;
+        ground.set({ highlight: { check: this.highlightChecks } });
+        ground.redrawAll();
+    },
+
+    toggleAllowPremoves() {
+        this.allowPremoves = !this.allowPremoves;
+        ground.set({ premovable: { enabled: this.allowPremoves } });
+        ground.redrawAll();
+    },
+
+    toggleAllowDrawing() {
+        this.allowDrawing = !this.allowDrawing;
+        ground.set({ drawable: {
+            enabled: this.allowDrawing,
+            visible: this.allowDrawing,
+        }});
+        ground.redrawAll();
     }
+
 });
 Alpine.start();

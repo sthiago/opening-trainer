@@ -134,6 +134,39 @@
               </span>
             </div>
           </div>
+          <div class="other-settings mt-10">
+            <div>Other settings</div>
+            <div>
+              <input type="checkbox" name="showCoordinates" id="showCoordinates"
+                x-model="$store.settings.showCoordinates" @click="$store.settings.toggleShowCoordinates()">
+              <label for="showCoordinates">Show coordinates</label>
+            </div>
+            <div>
+              <input type="checkbox" name="showPossibleMoves" id="showPossibleMoves"
+                x-model="$store.settings.showPossibleMoves" @click="$store.settings.toggleShowPossibleMoves()">
+              <label for="showPossibleMoves">Show possible moves</label>
+            </div>
+            <div>
+              <input type="checkbox" name="highlightLastMove" id="highlightLastMove"
+                x-model="$store.settings.highlightLastMove" @click="$store.settings.toggleHighlightLastMove()">
+              <label for="highlightLastMove">Highlight last move</label>
+            </div>
+            <div>
+              <input type="checkbox" name="highlightChecks" id="highlightChecks"
+                x-model="$store.settings.highlightChecks" @click="$store.settings.toggleHighlightChecks()">
+              <label for="highlightChecks">Highlight checks</label>
+            </div>
+            <div>
+              <input type="checkbox" name="allowPremoves" id="allowPremoves"
+                x-model="$store.settings.allowPremoves" @click="$store.settings.toggleAllowPremoves()">
+              <label for="allowPremoves">Allow premoves</label>
+            </div>
+            <div>
+              <input type="checkbox" name="allowDrawing" id="allowDrawing"
+                x-model="$store.settings.allowDrawing" @click="$store.settings.toggleAllowDrawing()">
+              <label for="allowDrawing">Allow drawing arrows</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
