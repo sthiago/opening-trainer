@@ -19,7 +19,6 @@ export function resizeHandle(els) {
             initialZoom = parseInt(window.getComputedStyle(document.body).getPropertyValue("---zoom"));
 
         let zoom = initialZoom;
-        console.log(zoom);
         // const saveZoom = debounce(() => xhr.text(`/pref/zoom?v=${zoom}`, { method: "post" }), 700);
 
         const resize = (move) => {
