@@ -17,9 +17,10 @@
           class="movelist font-mono border border-slate-500 overflow-scroll flex flex-col-reverse px-4">
         </div>
         <div class="flex flex-row justify-between gap-1">
-          <div class="p-2 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer active:brightness-125 text-sm text-center select-none">
+          <a class="p-2 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer active:brightness-125 text-sm text-center select-none"
+            :href="$store.state.getLichessAnalysisURL()" target="_blank">
             Analyze on Lichess
-          </div>
+          </a>
           <div class="p-1 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer active:brightness-125"
             @click="$store.state.copyPGNtoClipboard()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

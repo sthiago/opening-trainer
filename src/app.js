@@ -221,6 +221,10 @@ Alpine.store("state", {
 
     async copyPGNtoClipboard() {
         await navigator.clipboard.writeText(this.pgn);
+    },
+
+    getLichessAnalysisURL() {
+        return "https://lichess.org/analysis/pgn/" + this.pgn.replaceAll("\n", " ");
     }
 })
 Alpine.start();
