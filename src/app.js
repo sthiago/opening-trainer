@@ -46,6 +46,7 @@ function lichessOpeningPlay(cg, chess, delay, firstMove) {
     return async (orig, dest) => {
         chess.move({from: orig, to: dest});
         cg.set({ check: chess.in_check() });
+        Alpine.store("state").updatePGN();
 
         const database = Alpine.store("settings").selectedDatabase;
         const speeds = Alpine.store("settings").selectedTimeControls.join(",");
@@ -66,6 +67,7 @@ function lichessOpeningPlay(cg, chess, delay, firstMove) {
                 }
             });
             cg.playPremove();
+            Alpine.store("state").updatePGN();
         } else {
             console.log("No game found")
         }
@@ -205,4 +207,16 @@ Alpine.store("settings", {
     }
 
 });
+
+Alpine.store("state", {
+    pgn: "",
+
+    updatePGN() {
+        this.pgn = chess.pgn({ max_width: 12 });
+    },
+
+    pgnHTML() {
+        return "<div class='grow'></div><div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
+    }
+})
 Alpine.start();

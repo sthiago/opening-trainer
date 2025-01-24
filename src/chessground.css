@@ -11,8 +11,13 @@ body {
 }
 
 .board-wrapper {
+    min-width: calc(var(---board-scale) * 40rem);
     width: calc(var(---board-scale) * 40rem);
-    aspect-ratio: 1 / 1;
+    height: calc(var(---board-scale) * 40rem);
+}
+
+.movelist {
+    height: calc(var(---board-scale) * 40rem - 51px);
 }
 
 .cg-wrap {
