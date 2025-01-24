@@ -217,6 +217,10 @@ Alpine.store("state", {
 
     pgnHTML() {
         return "<div class='grow'></div><div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
+    },
+
+    async copyPGNtoClipboard() {
+        await navigator.clipboard.writeText(this.pgn);
     }
 })
 Alpine.start();
