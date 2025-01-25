@@ -231,6 +231,7 @@ Alpine.store("state", {
         ground.set({
             fen: this.fen,
             turnColor: toColor(chess),
+            lastMove: undefined,
             check: chess.in_check(),
             movable: {
                 color: toColor(chess),
@@ -278,6 +279,7 @@ Alpine.store("state", {
         ground.set({
             fen: this.fen,
             turnColor: toColor(chess),
+            lastMove: undefined,
             check: chess.in_check(),
             movable: {
                 color: toColor(chess),
