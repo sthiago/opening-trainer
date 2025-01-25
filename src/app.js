@@ -74,7 +74,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             cg.playPremove();
             Alpine.store("state").updateState();
         } else {
-            console.log("No game found")
+            Alpine.store("state").noGameFound = true;
         }
     };
 }
@@ -216,6 +216,7 @@ Alpine.store("settings", {
 Alpine.store("state", {
     pgn: "",
     fen: chess.fen(),
+    noGameFound: false,
 
     updateState() {
         this.pgn = chess.pgn({ max_width: 12 });
@@ -223,7 +224,10 @@ Alpine.store("state", {
     },
 
     pgnHTML() {
-        return "<div class='grow'></div><div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
+        let movelist = "<div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
+        if (this.noGameFound) movelist = "<div class='m-2 font-bold'>No game found</div>" + movelist;
+        movelist = "<div class='grow'></div>" + movelist
+        return movelist;
     },
 
     async copyPGNtoClipboard() {
@@ -250,6 +254,7 @@ Alpine.store("state", {
         }
 
         this.pgn = "";
+        this.noGameFound = false;
         ground.set({
             fen: this.fen,
             turnColor: toColor(chess),
