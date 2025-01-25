@@ -166,7 +166,7 @@
               </span>
             </div>
           </div>
-          <div class="other-settings mt-10">
+          <div class="other-settings mt-5">
             <div>Other settings</div>
             <div>
               <input type="checkbox" name="showCoordinates" id="showCoordinates"
@@ -198,6 +198,25 @@
                 x-model="$store.settings.allowDrawing" @click="$store.settings.toggleAllowDrawing()">
               <label for="allowDrawing">Allow drawing arrows</label>
             </div>
+          </div>
+          <div class="setup-position mt-5">
+            <div>Setup initial position</div>
+            <div class="flex flex-row gap-1 m-2">
+              <div>FEN:</div>
+              <input type="text" x-model="$store.settings.startingFEN" class="bg-slate-300 grow px-2 min-w-44"
+                @paste="">
+              </input>
+            </div>
+            <div class="flex flex-row gap-2 mx-2 justify-between">
+              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center">
+                Input moves
+              </div>
+              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center"
+                @click="$store.settings.resetStartingFENtoDefault()">
+                Reset to default
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

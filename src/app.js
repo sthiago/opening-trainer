@@ -4,6 +4,7 @@ import { Chess, SQUARES } from "chess.js";
 import { Chessground } from "chessground";
 import { resizeHandle } from "./resize.js";
 
+const DEFAULT_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 function toDests(chess) {
     const dests = new Map();
@@ -129,6 +130,8 @@ Alpine.store("settings", {
     allowPremoves: false,
     allowDrawing: true,
 
+    startingFEN: DEFAULT_POSITION,
+
     toggleSettings() {
         this.showSettings = !this.showSettings;
         ground.redrawAll();
@@ -209,6 +212,10 @@ Alpine.store("settings", {
             visible: this.allowDrawing,
         }});
         ground.redrawAll();
+    },
+
+    resetStartingFENtoDefault() {
+        this.startingFEN = DEFAULT_POSITION;
     }
 
 });
@@ -224,7 +231,15 @@ Alpine.store("state", {
     },
 
     async resetState() {
+        const startingFEN = Alpine.store("settings").startingFEN;
+        const playerColor = Alpine.store("settings").playerColor;
+
         chess.reset();
+        const success = chess.load(startingFEN);
+        if (!success) {
+            Alpine.store("settings").startingFEN = DEFAULT_POSITION;
+        }
+
         this.pgn = "";
         this.fen = chess.fen();
         this.noGameFound = false;
@@ -239,8 +254,11 @@ Alpine.store("state", {
             }
         });
 
-        if (ground.state.orientation != ground.state.turnColor) {
-            await lichessOpeningPlay(ground, chess, 500)()
+        if (this.fen === DEFAULT_POSITION && playerColor === "black") {
+            ground.set({ movable: { color: undefined }});
+            await lichessOpeningPlay(ground, chess, 500)();
+        } else {
+            Alpine.store("settings").selectColor(toColor(chess));
         }
     },
 
