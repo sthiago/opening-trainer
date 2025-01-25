@@ -18,6 +18,10 @@ function toColor(chess) {
     return (chess.turn() === 'w') ? 'white' : 'black';
 }
 
+function sleep(delay) {
+    return new Promise((resolve) => setTimeout(resolve, delay))
+}
+
 function getWeightedRandomMove(data) {
     const total = data.moves.reduce((prev, curr) => prev + curr.white + curr.black + curr.draws, 0);
 
@@ -42,11 +46,11 @@ function getWeightedRandomMove(data) {
     return selectedMove;
 }
 
-function lichessOpeningPlay(cg, chess, delay, firstMove) {
+function lichessOpeningPlay(cg, chess, delay = 0) {
     return async (orig, dest) => {
         chess.move({from: orig, to: dest});
         cg.set({ check: chess.in_check() });
-        Alpine.store("state").updatePGN();
+        Alpine.store("state").updateState();
 
         const database = Alpine.store("settings").selectedDatabase;
         const speeds = Alpine.store("settings").selectedTimeControls.join(",");
@@ -56,6 +60,7 @@ function lichessOpeningPlay(cg, chess, delay, firstMove) {
         const response = await axios.get(explorerUrl);
         const move = getWeightedRandomMove(response.data);
         if (move !== undefined) {
+            await sleep(delay);
             chess.move(move.san);
             cg.move(move.from, move.to);
             cg.set({
@@ -67,7 +72,7 @@ function lichessOpeningPlay(cg, chess, delay, firstMove) {
                 }
             });
             cg.playPremove();
-            Alpine.store("state").updatePGN();
+            Alpine.store("state").updateState();
         } else {
             console.log("No game found")
         }
@@ -104,7 +109,7 @@ const ground = Chessground(document.getElementById("chessground"), config);
 ground.set({
     movable: {
         events: {
-            after: lichessOpeningPlay(ground, chess, 1000, false)
+            after: lichessOpeningPlay(ground, chess, 500)
         }
     }
 });
@@ -210,9 +215,11 @@ Alpine.store("settings", {
 
 Alpine.store("state", {
     pgn: "",
+    fen: chess.fen(),
 
-    updatePGN() {
+    updateState() {
         this.pgn = chess.pgn({ max_width: 12 });
+        this.fen = chess.fen();
     },
 
     pgnHTML() {
@@ -223,8 +230,36 @@ Alpine.store("state", {
         await navigator.clipboard.writeText(this.pgn);
     },
 
+    async copyFENtoClipboard() {
+        await navigator.clipboard.writeText(this.fen);
+    },
+
     getLichessAnalysisURL() {
         return "https://lichess.org/analysis/pgn/" + this.pgn.replaceAll("\n", " ");
+    },
+
+    async onPasteFEN() {
+        if (this.fen === chess.fen())
+            return;
+
+        const success = chess.load(this.fen);
+
+        if (!success) {
+            this.fen = 'Invalid FEN';
+            return;
+        }
+
+        this.pgn = "";
+        ground.set({
+            fen: this.fen,
+            turnColor: toColor(chess),
+            check: chess.in_check(),
+            movable: {
+                color: toColor(chess),
+                dests: toDests(chess)
+            }
+        });
+        Alpine.store("settings").selectColor(toColor(chess));
     }
 })
 Alpine.start();
