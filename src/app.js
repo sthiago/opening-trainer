@@ -223,6 +223,26 @@ Alpine.store("state", {
         this.fen = chess.fen();
     },
 
+    async resetState() {
+        chess.reset();
+        this.pgn = "";
+        this.fen = chess.fen();
+        this.noGameFound = false;
+        ground.set({
+            fen: this.fen,
+            turnColor: toColor(chess),
+            check: chess.in_check(),
+            movable: {
+                color: toColor(chess),
+                dests: toDests(chess)
+            }
+        });
+
+        if (ground.state.orientation != ground.state.turnColor) {
+            await lichessOpeningPlay(ground, chess, 500)()
+        }
+    },
+
     pgnHTML() {
         let movelist = "<div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
         if (this.noGameFound) movelist = "<div class='m-2 font-bold'>No game found</div>" + movelist;
