@@ -10,7 +10,7 @@
   <body>
     <div class="main-wrapper flex flex-row justify-center gap-2 m-4" x-data>
       <div class="board-wrapper pl-[3px] pb-[3px]">
-        <div id="chessground" class="blue merida"></div>
+        <div id="chessground" class="blue merida" :class="$store.settings.isSettingUpBoard && 'grayscale'"></div>
         <div class="flex flex-row gap-2 mt-2 mr-1">
           <input type="text" x-model="$store.state.fen" class="bg-slate-300 grow px-2 min-w-44"
             @paste="$nextTick(() => { $store.state.onPasteFEN() });">
@@ -208,7 +208,9 @@
               </input>
             </div>
             <div class="flex flex-row gap-2 mx-2 justify-between">
-              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center">
+              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center"
+                :class="$store.settings.isSettingUpBoard && 'border border-slate-900'"
+                @click="$store.settings.toggleSetupBoard()">
                 Input moves
               </div>
               <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center"

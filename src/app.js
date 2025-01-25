@@ -47,6 +47,22 @@ function getWeightedRandomMove(data) {
     return selectedMove;
 }
 
+function playOtherSide(cg, chess) {
+    return (orig, dest) => {
+      chess.move({from: orig, to: dest});
+      cg.set({
+        turnColor: toColor(chess),
+        check: chess.in_check(),
+        movable: {
+          color: toColor(chess),
+          dests: toDests(chess)
+        }
+      });
+      Alpine.store("state").updateState();
+      Alpine.store("settings").startingFEN = chess.fen();
+    };
+  }
+
 function lichessOpeningPlay(cg, chess, delay = 0) {
     return async (orig, dest) => {
         chess.move({from: orig, to: dest});
@@ -131,6 +147,7 @@ Alpine.store("settings", {
     allowDrawing: true,
 
     startingFEN: DEFAULT_POSITION,
+    isSettingUpBoard: false,
 
     toggleSettings() {
         this.showSettings = !this.showSettings;
@@ -216,6 +233,18 @@ Alpine.store("settings", {
 
     resetStartingFENtoDefault() {
         this.startingFEN = DEFAULT_POSITION;
+    },
+
+    toggleSetupBoard() {
+        this.isSettingUpBoard = !this.isSettingUpBoard;
+
+        if (this.isSettingUpBoard) {
+            ground.set({ movable: { events: { after: playOtherSide(ground, chess) } } });
+            this.startingFEN = chess.fen();
+        } else {
+            ground.set({ movable: { events: { after: lichessOpeningPlay(ground, chess, 500) } } });
+            Alpine.store("settings").selectColor(toColor(chess));
+        }
     }
 
 });
