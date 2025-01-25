@@ -260,7 +260,8 @@ Alpine.store("state", {
     },
 
     getLichessAnalysisURL() {
-        return "https://lichess.org/analysis/pgn/" + this.pgn.replaceAll("\n", " ");
+        const playerColor = Alpine.store("settings").playerColor;
+        return "https://lichess.org/analysis/pgn/" + this.pgn.replaceAll("\n", " ") + "?color=" + playerColor;
     },
 
     async onPasteFEN() {
