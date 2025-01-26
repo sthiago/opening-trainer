@@ -60,14 +60,14 @@
             <div>Play as</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.playerColor == 'white' && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.playerColor == 'white' ? 'border-slate-900' : 'border-slate-300'"
                 @click="await $store.settings.selectColor('white')">
                 White
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.playerColor == 'black' && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.playerColor == 'black' ? 'border-slate-900' : 'border-slate-300'"
                 @click="await $store.settings.selectColor('black')">
                 Black
               </span>
@@ -77,14 +77,14 @@
             <div>Database</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedDatabase == 'masters' && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedDatabase == 'masters' ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.selectDatabase('masters')">
                 Masters
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedDatabase == 'lichess' && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedDatabase == 'lichess' ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.selectDatabase('lichess')">
                 Lichess
               </span>
@@ -94,26 +94,26 @@
             <div>Time control</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedTimeControls.includes('blitz') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedTimeControls.includes('blitz') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleTimeControl('blitz')">
                 Blitz
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedTimeControls.includes('rapid') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedTimeControls.includes('rapid') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleTimeControl('rapid')">
                 Rapid
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedTimeControls.includes('classical') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedTimeControls.includes('classical') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleTimeControl('classical')">
                 Classical
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedTimeControls.includes('correspondence') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedTimeControls.includes('correspondence') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleTimeControl('correspondence')">
                 Correspondence
               </span>
@@ -123,44 +123,44 @@
             <div>Average rating</div>
             <div class="flex flex-row flex-wrap m-0">
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('1200') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('1200') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('1200')">
                 1200
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('1400') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('1400') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('1400')">
                 1400
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('1600') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('1600') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('1600')">
                 1600
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('1800') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('1800') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('1800')">
                 1800
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('2000') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('2000') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('2000')">
                 2000
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('2200') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('2200') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('2200')">
                 2200
               </span>
               <span
-                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer"
-                :class="$store.settings.selectedRatings.includes('2500') && 'border border-slate-900'"
+                class="p-1 m-0.5 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer border"
+                :class="$store.settings.selectedRatings.includes('2500') ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleRating('2500')">
                 2500
               </span>
@@ -208,8 +208,8 @@
               </input>
             </div>
             <div class="flex flex-row gap-2 mx-2 justify-between">
-              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center"
-                :class="$store.settings.isSettingUpBoard && 'border border-slate-900'"
+              <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center border"
+                :class="$store.settings.isSettingUpBoard ? 'border-slate-900' : 'border-slate-300'"
                 @click="$store.settings.toggleSetupBoard()">
                 Input moves
               </div>
