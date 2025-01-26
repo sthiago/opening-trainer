@@ -307,13 +307,6 @@ Alpine.store("state", {
         });
     },
 
-    pgnHTML() {
-        let movelist = "<div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
-        if (this.noGameFound) movelist = "<div class='m-2 font-bold'>No game found</div>" + movelist;
-        movelist = "<div class='grow'></div>" + movelist
-        return movelist;
-    },
-
     async copyPGNtoClipboard() {
         await navigator.clipboard.writeText(this.pgn);
     },

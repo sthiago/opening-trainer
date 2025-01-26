@@ -24,8 +24,14 @@
         </div>
       </div>
       <div class="sidebar flex flex-col w-44 gap-2 mt-1">
-        <div x-html="$store.state.pgnHTML()"
-          class="movelist font-mono border border-slate-500 overflow-scroll flex flex-col-reverse px-4">
+        <div class="movelist font-mono border border-slate-500 overflow-scroll flex flex-col-reverse px-4">
+          <div class='grow'></div>
+          <template x-if="$store.state.noGameFound">
+            <div class='m-2 font-bold'>No game found</div>
+          </template>
+          <template x-for="move in $store.state.pgn.split('\n').toReversed()">
+            <div x-text="move"></div>
+          </template>
         </div>
         <div class="flex flex-row justify-between gap-1">
           <a class="p-2 bg-slate-300 hover:bg-slate-500 hover:cursor-pointer active:brightness-125 text-sm text-center select-none"
