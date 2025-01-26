@@ -291,6 +291,22 @@ Alpine.store("state", {
         }
     },
 
+    undoLastMove() {
+        chess.undo();
+        this.updateState();
+        Alpine.store("settings").startingFEN = chess.fen();
+        ground.set({
+            fen: this.fen,
+            turnColor: toColor(chess),
+            lastMove: undefined,
+            check: chess.in_check(),
+            movable: {
+                color: toColor(chess),
+                dests: toDests(chess)
+            }
+        });
+    },
+
     pgnHTML() {
         let movelist = "<div>" + this.pgn.split("\n").toReversed().join("</div><div>") + "</div>";
         if (this.noGameFound) movelist = "<div class='m-2 font-bold'>No game found</div>" + movelist;

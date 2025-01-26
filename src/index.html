@@ -213,12 +213,15 @@
                 @click="$store.settings.toggleSetupBoard()">
                 Input moves
               </div>
+              <div class="bg-slate-300 px-2 py-1" @click="$store.state.undoLastMove()"
+                :class="$store.settings.isSettingUpBoard ? 'hover:bg-slate-500 hover:cursor-pointer active:brightness-125' : 'opacity-50'">
+                Undo
+              </div>
               <div class="bg-slate-300 px-2 py-1 hover:cursor-pointer hover:bg-slate-500 active:brightness-125 grow text-center"
                 @click="$store.settings.resetStartingFENtoDefault()">
                 Reset to default
               </div>
             </div>
-
           </div>
         </div>
       </div>
