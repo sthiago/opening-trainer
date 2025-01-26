@@ -308,7 +308,7 @@ Alpine.store("state", {
 
     getLichessAnalysisURL() {
         const playerColor = Alpine.store("settings").playerColor;
-        return "https://lichess.org/analysis/pgn/" + this.pgn.replaceAll("\n", " ") + "?color=" + playerColor;
+        return "https://lichess.org/analysis/pgn/" + encodeURIComponent(this.pgn.replaceAll("\n", " ")) + "?color=" + playerColor;
     },
 
     async onPasteFEN() {
