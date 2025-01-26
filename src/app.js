@@ -68,6 +68,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
         chess.move({from: orig, to: dest});
         cg.set({ check: chess.in_check() });
         Alpine.store("state").updateState();
+        Alpine.store("state").isThinking = true;
 
         const database = Alpine.store("settings").selectedDatabase;
         const speeds = Alpine.store("settings").selectedTimeControls.join(",");
@@ -93,6 +94,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
         } else {
             Alpine.store("state").noGameFound = true;
         }
+        Alpine.store("state").isThinking = false;
     };
 }
 
@@ -253,6 +255,7 @@ Alpine.store("state", {
     pgn: "",
     fen: chess.fen(),
     noGameFound: false,
+    isThinking: false,
 
     updateState() {
         this.pgn = chess.pgn({ max_width: 12 });
