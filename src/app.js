@@ -102,6 +102,7 @@ const chess = Chess();
 const config = {
     coordinates: false,
     disableContextMenu: true,
+    addDimensionsCssVarsTo: document.getElementsByTagName("body")[0],
     movable: {
         color: "white",
         free: false,
