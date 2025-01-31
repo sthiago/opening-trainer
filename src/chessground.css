@@ -254,7 +254,6 @@ cg-resize:hover {
     width: var(---cg-width, 100%);
     height: var(---cg-height, 100%);
     bottom: 0;
-    /* @include inline-end(0); */
 
     square {
         cursor: pointer;
@@ -262,14 +261,18 @@ cg-resize:hover {
         background-color: #b0b0b0;
         box-shadow: inset 0 0 25px 3px #808080;
         pointer-events: all;
-        /* @include transition; */
+        transition: all 150ms;
 
         position:absolute;
         top:0;
         left:0;
         width:12.5%;
         height:12.5%;
-        pointer-events:none
+    }
+
+    square:hover {
+        box-shadow: inset 0 0 48px 8px hsl(22, 100%, 42%);
+        border-radius: 0%;
     }
 
     piece {
@@ -280,15 +283,8 @@ cg-resize:hover {
 
         width: 100%;
         height: 100%;
-
-        /* @include transition; */
-
+        transition: all 150ms;
         transform: scale(0.8);
-    }
-
-    square:hover {
-        box-shadow: inset 0 0 48px 8px gray;
-        border-radius: 0%;
     }
 
     square:hover piece {
