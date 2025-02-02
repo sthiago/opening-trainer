@@ -63,11 +63,48 @@ function playOtherSide(cg, chess) {
     };
   }
 
+
+function startPromotion(square) {
+    return new Promise((resolve, reject) => {
+        Alpine.store("state").promotionColor = toColor(chess);
+
+        if (Alpine.store("settings").playerColor === "white") {
+            const column = "abcdefgh".indexOf(square[0]);
+            Alpine.store("state").promotionLeft = (column * 12.5).toString() + "%";
+        } else {
+            const column = "hgfedcba".indexOf(square[0]);
+            Alpine.store("state").promotionLeft = (column * 12.5).toString() + "%";
+        }
+
+        if (Alpine.store("settings").playerColor === toColor(chess)) {
+            Alpine.store("state").promotionTop = ["0%", "12.5%", "25%", "37.5%"];
+        } else {
+            Alpine.store("state").promotionTop = ["87.5%", "75%", "62.5%", "50%"];
+        }
+
+        Alpine.store("state").promotionResolve = resolve;
+    });
+}
+
+
 function lichessOpeningPlay(cg, chess, delay = 0) {
     return async (orig, dest) => {
-        chess.move({from: orig, to: dest});
-        cg.set({ check: chess.in_check() });
-        Alpine.store("state").updateState();
+
+        // there's a player move
+        if (orig && dest) {
+            // should trigger promotion?
+            let promotion = undefined;
+            if (chess.get(orig)["type"] === "p" && "18".includes(dest[1])) {
+                Alpine.store("state").isPromoting = true;
+                promotion = await startPromotion(dest);
+                Alpine.store("state").isPromoting = false;
+            }
+
+            chess.move({from: orig, to: dest, promotion: promotion});
+            cg.set({ fen: chess.fen(), check: chess.in_check() });
+            Alpine.store("state").updateState();
+        }
+
         Alpine.store("state").isThinking = true;
 
         const database = Alpine.store("settings").selectedDatabase;
@@ -82,6 +119,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             chess.move(move.san);
             cg.move(move.from, move.to);
             cg.set({
+                fen: chess.fen(),
                 turnColor: toColor(chess),
                 check: chess.in_check(),
                 movable: {
@@ -257,6 +295,11 @@ Alpine.store("state", {
     fen: chess.fen(),
     noGameFound: false,
     isThinking: false,
+    isPromoting: false,
+    promotionColor: undefined,
+    promotionResolve: undefined,
+    promotionLeft: "0%",
+    promotionTop: ["0%", "0%", "0%", "0%"],
 
     updateState() {
         this.pgn = chess.pgn({ max_width: 12 });
