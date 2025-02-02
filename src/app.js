@@ -48,21 +48,29 @@ function getWeightedRandomMove(data) {
 }
 
 function playOtherSide(cg, chess) {
-    return (orig, dest) => {
-      chess.move({from: orig, to: dest});
-      cg.set({
-        turnColor: toColor(chess),
-        check: chess.in_check(),
-        movable: {
-          color: toColor(chess),
-          dests: toDests(chess)
+    return async (orig, dest) => {
+        // should trigger promotion?
+        let promotion = undefined;
+        if (chess.get(orig)["type"] === "p" && "18".includes(dest[1])) {
+            Alpine.store("state").isPromoting = true;
+            promotion = await startPromotion(dest);
+            Alpine.store("state").isPromoting = false;
         }
-      });
-      Alpine.store("state").updateState();
-      Alpine.store("settings").startingFEN = chess.fen();
-    };
-  }
 
+        chess.move({from: orig, to: dest, promotion: promotion});
+        cg.set({
+            fen: chess.fen(),
+            turnColor: toColor(chess),
+            check: chess.in_check(),
+            movable: {
+                color: toColor(chess),
+                dests: toDests(chess)
+            }
+        });
+        Alpine.store("state").updateState();
+        Alpine.store("settings").startingFEN = chess.fen();
+    };
+}
 
 function startPromotion(square) {
     return new Promise((resolve, reject) => {
