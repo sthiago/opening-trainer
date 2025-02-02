@@ -202,7 +202,7 @@ Alpine.store("settings", {
             orientation: this.playerColor
         });
 
-        if (ground.state.orientation != ground.state.turnColor) {
+        if (ground.state.orientation != ground.state.turnColor && !this.isSettingUpBoard) {
             await lichessOpeningPlay(ground, chess, 500)()
         }
         ground.redrawAll();
