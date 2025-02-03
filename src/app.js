@@ -106,6 +106,9 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
                 Alpine.store("state").isPromoting = true;
                 promotion = await startPromotion(dest);
                 Alpine.store("state").isPromoting = false;
+                if (promotion === false) {
+                    return;
+                }
             }
 
             chess.move({from: orig, to: dest, promotion: promotion});
@@ -204,9 +207,17 @@ Alpine.store("settings", {
     },
 
     async selectColor(color) {
+
+        if (Alpine.store("state").isPromoting) {
+            Alpine.store("state").promotionResolve(false);
+            Alpine.store("state").isPromoting = false;
+        }
+
         this.playerColor = color;
 
         ground.set({
+            fen:chess.fen(),
+            turnColor: toColor(chess),
             orientation: this.playerColor
         });
 
