@@ -296,6 +296,21 @@ Alpine.store("settings", {
     },
 
     toggleSetupBoard() {
+
+        if (Alpine.store("state").isPromoting) {
+            Alpine.store("state").promotionResolve(false);
+            Alpine.store("state").isPromoting = false;
+
+            ground.set({
+                fen:chess.fen(),
+                turnColor: toColor(chess),
+                movable: {
+                    color: toColor(chess),
+                    dests: toDests(chess)
+                }
+            });
+        }
+
         this.isSettingUpBoard = !this.isSettingUpBoard;
 
         if (this.isSettingUpBoard) {
@@ -395,6 +410,11 @@ Alpine.store("state", {
         if (!success) {
             this.fen = 'Invalid FEN';
             return;
+        }
+
+        if (Alpine.store("state").isPromoting) {
+            Alpine.store("state").promotionResolve(false);
+            Alpine.store("state").isPromoting = false;
         }
 
         this.pgn = "";
