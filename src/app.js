@@ -138,7 +138,6 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
                     dests: toDests(chess)
                 }
             });
-            cg.playPremove();
             Alpine.store("state").updateState();
         } else {
             Alpine.store("state").noGameFound = true;
@@ -195,7 +194,6 @@ Alpine.store("settings", {
     showPossibleMoves: true,
     highlightLastMove: true,
     highlightChecks: true,
-    allowPremoves: false,
     allowDrawing: true,
 
     startingFEN: DEFAULT_POSITION,
@@ -273,12 +271,6 @@ Alpine.store("settings", {
     toggleHighlightChecks() {
         this.highlightChecks = !this.highlightChecks;
         ground.set({ highlight: { check: this.highlightChecks } });
-        ground.redrawAll();
-    },
-
-    toggleAllowPremoves() {
-        this.allowPremoves = !this.allowPremoves;
-        ground.set({ premovable: { enabled: this.allowPremoves } });
         ground.redrawAll();
     },
 
