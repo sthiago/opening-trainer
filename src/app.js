@@ -68,8 +68,10 @@ function playOtherSide(cg, chess) {
 
         chess.move({from: orig, to: dest, promotion: promotion});
 
-        const san = chess.history().pop();
-        san.includes("x") ? SoundCapture.play() : SoundMove.play();
+        if (Alpine.store("settings").enableSounds) {
+            const san = chess.history().pop();
+            san.includes("x") ? SoundCapture.play() : SoundMove.play();
+        }
 
         cg.set({
             fen: chess.fen(),
@@ -126,8 +128,10 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
 
             chess.move({from: orig, to: dest, promotion: promotion});
 
-            const san = chess.history().pop();
-            san.includes("x") ? SoundCapture.play() : SoundMove.play();
+            if (Alpine.store("settings").enableSounds) {
+                const san = chess.history().pop();
+                san.includes("x") ? SoundCapture.play() : SoundMove.play();
+            }
 
             cg.set({ fen: chess.fen(), check: chess.in_check() });
             Alpine.store("state").updateState();
@@ -147,8 +151,10 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             chess.move(move.san);
             cg.move(move.from, move.to);
 
-            const san = chess.history().pop();
-            san.includes("x") ? SoundCapture.play() : SoundMove.play();
+            if (Alpine.store("settings").enableSounds) {
+                const san = chess.history().pop();
+                san.includes("x") ? SoundCapture.play() : SoundMove.play();
+            }
 
             cg.set({
                 fen: chess.fen(),
@@ -216,6 +222,7 @@ Alpine.store("settings", {
     highlightLastMove: true,
     highlightChecks: true,
     allowDrawing: true,
+    enableSounds: true,
 
     startingFEN: DEFAULT_POSITION,
     isSettingUpBoard: false,
@@ -302,6 +309,10 @@ Alpine.store("settings", {
             visible: this.allowDrawing,
         }});
         ground.redrawAll();
+    },
+
+    toggleEnableSounds() {
+        this.enableSounds = !this.enableSounds;
     },
 
     resetStartingFENtoDefault() {
@@ -445,4 +456,5 @@ Alpine.store("state", {
         Alpine.store("settings").selectColor(toColor(chess));
     }
 })
+
 Alpine.start();

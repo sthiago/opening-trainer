@@ -224,6 +224,11 @@
                 x-model="$store.settings.allowDrawing" @click="$store.settings.toggleAllowDrawing()">
               <label for="allowDrawing">Allow drawing arrows</label>
             </div>
+            <div>
+              <input type="checkbox" name="enableSounds" id="enableSounds"
+                x-model="$store.settings.enableSounds" @click="$store.settings.toggleEnableSounds()">
+              <label for="enableSounds">Enable sounds</label>
+            </div>
           </div>
           <div class="setup-position mt-5">
             <div>Setup initial position</div>
