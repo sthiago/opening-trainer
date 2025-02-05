@@ -1,10 +1,19 @@
 import axios from "axios";
 import Alpine from "alpinejs";
+import { Howl } from 'howler';
 import { Chess, SQUARES } from "chess.js";
 import { Chessground } from "chessground";
 import { resizeHandle } from "./resize.js";
 
+import SoundMoveOGG from "url:./sound/LichessMove.ogg";
+import SoundMoveMP3 from "url:./sound/LichessMove.mp3";
+import SoundCaptureOGG from "url:./sound/LichessCapture.ogg";
+import SoundCaptureMP3 from "url:./sound/LichessCapture.mp3";
+
 const DEFAULT_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
+const SoundMove = new Howl({ src: [ SoundMoveOGG, SoundMoveMP3 ] });
+const SoundCapture = new Howl({ src: [ SoundCaptureOGG, SoundCaptureMP3 ] });
 
 function toDests(chess) {
     const dests = new Map();
@@ -58,6 +67,10 @@ function playOtherSide(cg, chess) {
         }
 
         chess.move({from: orig, to: dest, promotion: promotion});
+
+        const san = chess.history().pop();
+        san.includes("x") ? SoundCapture.play() : SoundMove.play();
+
         cg.set({
             fen: chess.fen(),
             turnColor: toColor(chess),
@@ -112,6 +125,10 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             }
 
             chess.move({from: orig, to: dest, promotion: promotion});
+
+            const san = chess.history().pop();
+            san.includes("x") ? SoundCapture.play() : SoundMove.play();
+
             cg.set({ fen: chess.fen(), check: chess.in_check() });
             Alpine.store("state").updateState();
         }
@@ -129,6 +146,10 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             await sleep(delay);
             chess.move(move.san);
             cg.move(move.from, move.to);
+
+            const san = chess.history().pop();
+            san.includes("x") ? SoundCapture.play() : SoundMove.play();
+
             cg.set({
                 fen: chess.fen(),
                 turnColor: toColor(chess),
