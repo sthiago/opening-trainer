@@ -382,6 +382,7 @@ Alpine.store("state", {
             turnColor: toColor(chess),
             lastMove: undefined,
             check: chess.in_check(),
+            selected: undefined,
             movable: {
                 color: toColor(chess),
                 dests: toDests(chess)
@@ -448,6 +449,7 @@ Alpine.store("state", {
             turnColor: toColor(chess),
             lastMove: undefined,
             check: chess.in_check(),
+            selected: undefined,
             movable: {
                 color: toColor(chess),
                 dests: toDests(chess)
