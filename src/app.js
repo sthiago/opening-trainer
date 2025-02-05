@@ -109,9 +109,12 @@ function startPromotion(square) {
     });
 }
 
-
 function lichessOpeningPlay(cg, chess, delay = 0) {
     return async (orig, dest) => {
+        if (Alpine.store("state").lockLichessOpeningPlay) {
+            return;
+        }
+        Alpine.store("state").lockLichessOpeningPlay = true;
 
         // there's a player move
         if (orig && dest) {
@@ -170,6 +173,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             Alpine.store("state").noGameFound = true;
         }
         Alpine.store("state").isThinking = false;
+        Alpine.store("state").lockLichessOpeningPlay = false;
     };
 }
 
@@ -366,6 +370,7 @@ Alpine.store("state", {
     promotionResolve: undefined,
     promotionLeft: "0%",
     promotionTop: ["0%", "0%", "0%", "0%"],
+    lockLichessOpeningPlay: false,
 
     updateState() {
         this.pgn = chess.pgn({ max_width: 12 });
