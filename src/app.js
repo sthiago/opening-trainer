@@ -338,11 +338,19 @@ Alpine.store("settings", {
         this.isSettingUpBoard = !this.isSettingUpBoard;
 
         if (this.isSettingUpBoard) {
-            ground.set({ movable: { events: { after: playOtherSide(ground, chess) } } });
+            ground.set({
+                movable: {
+                    events: { after: playOtherSide(ground, chess) } ,
+                    turnColor: toColor(chess),
+                    color: toColor(chess),
+                    dests: toDests(chess)
+                }
+            });
             this.startingFEN = chess.fen();
+            Alpine.store("state").noGameFound = false;
         } else {
             ground.set({ movable: { events: { after: lichessOpeningPlay(ground, chess, 500) } } });
-            Alpine.store("settings").selectColor(toColor(chess));
+            this.selectColor(toColor(chess));
         }
     }
 
