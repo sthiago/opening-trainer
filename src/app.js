@@ -125,6 +125,7 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
                 promotion = await startPromotion(dest);
                 Alpine.store("state").isPromoting = false;
                 if (promotion === false) {
+                    // can't unlock here for some reason, must be from the caller of reject
                     return;
                 }
             }
@@ -241,6 +242,7 @@ Alpine.store("settings", {
         if (Alpine.store("state").isPromoting) {
             Alpine.store("state").promotionResolve(false);
             Alpine.store("state").isPromoting = false;
+            Alpine.store("state").lockLichessOpeningPlay = false;
         }
 
         this.playerColor = color;
@@ -248,13 +250,23 @@ Alpine.store("settings", {
         ground.set({
             fen:chess.fen(),
             turnColor: toColor(chess),
-            orientation: this.playerColor
+            orientation: this.playerColor,
+            movable: {
+                color: undefined,
+                dests: undefined,
+            }
         });
 
-        if (ground.state.orientation != ground.state.turnColor && !this.isSettingUpBoard) {
-            await lichessOpeningPlay(ground, chess, 500)()
+        if (this.isSettingUpBoard || this.playerColor === toColor(chess)) {
+            ground.set({
+                movable: {
+                    color: toColor(chess),
+                    dests: toDests(chess),
+                }
+            });
+        } else {
+            await lichessOpeningPlay(ground, chess, 500)();
         }
-        ground.redrawAll();
     },
 
     selectDatabase(database) {
@@ -328,33 +340,43 @@ Alpine.store("settings", {
         if (Alpine.store("state").isPromoting) {
             Alpine.store("state").promotionResolve(false);
             Alpine.store("state").isPromoting = false;
-
-            ground.set({
-                fen:chess.fen(),
-                turnColor: toColor(chess),
-                movable: {
-                    color: toColor(chess),
-                    dests: toDests(chess)
-                }
-            });
+            Alpine.store("state").lockLichessOpeningPlay = false;
         }
+
+        ground.set({
+            fen:chess.fen(),
+            turnColor: toColor(chess),
+        });
 
         this.isSettingUpBoard = !this.isSettingUpBoard;
 
         if (this.isSettingUpBoard) {
             ground.set({
                 movable: {
-                    events: { after: playOtherSide(ground, chess) } ,
-                    turnColor: toColor(chess),
                     color: toColor(chess),
-                    dests: toDests(chess)
+                    dests: toDests(chess),
+                    events: { after: playOtherSide(ground, chess) },
                 }
             });
             this.startingFEN = chess.fen();
             Alpine.store("state").noGameFound = false;
+        } else if (Alpine.store("settings").playerColor === toColor(chess)) {
+            ground.set({
+                movable: {
+                    color: toColor(chess),
+                    dests: toDests(chess),
+                    events: { after: lichessOpeningPlay(ground, chess, 500) },
+                }
+            });
         } else {
-            ground.set({ movable: { events: { after: lichessOpeningPlay(ground, chess, 500) } } });
-            this.selectColor(toColor(chess));
+            ground.set({
+                movable: {
+                    color: undefined,
+                    dests: undefined,
+                    events: { after: lichessOpeningPlay(ground, chess, 500) }
+                }
+            });
+            lichessOpeningPlay(ground, chess, 500)();
         }
     }
 
@@ -378,6 +400,8 @@ Alpine.store("state", {
     },
 
     async resetState() {
+        Alpine.store("settings").isSettingUpBoard = false;
+
         const startingFEN = Alpine.store("settings").startingFEN;
         const playerColor = Alpine.store("settings").playerColor;
 
@@ -397,16 +421,21 @@ Alpine.store("state", {
             check: chess.in_check(),
             selected: undefined,
             movable: {
-                color: toColor(chess),
-                dests: toDests(chess)
+                color: undefined,
+                dests: undefined,
             }
         });
 
-        if (this.fen === DEFAULT_POSITION && playerColor === "black") {
-            ground.set({ movable: { color: undefined }});
-            await lichessOpeningPlay(ground, chess, 500)();
+        if (playerColor === toColor(chess)) {
+            ground.set({
+                movable: {
+                    color: toColor(chess),
+                    dests: toDests(chess),
+                    events: { after: lichessOpeningPlay(ground, chess, 500) },
+                }
+            });
         } else {
-            Alpine.store("settings").selectColor(toColor(chess));
+            await lichessOpeningPlay(ground, chess, 500)();
         }
     },
 
@@ -417,8 +446,9 @@ Alpine.store("state", {
         ground.set({
             fen: this.fen,
             turnColor: toColor(chess),
-            lastMove: undefined,
             check: chess.in_check(),
+            lastMove: undefined,
+            selected: undefined,
             movable: {
                 color: toColor(chess),
                 dests: toDests(chess)
@@ -444,7 +474,6 @@ Alpine.store("state", {
             return;
 
         const success = chess.load(this.fen);
-
         if (!success) {
             this.fen = 'Invalid FEN';
             return;
@@ -453,22 +482,33 @@ Alpine.store("state", {
         if (Alpine.store("state").isPromoting) {
             Alpine.store("state").promotionResolve(false);
             Alpine.store("state").isPromoting = false;
+            Alpine.store("state").lockLichessOpeningPlay = false;
         }
 
         this.pgn = "";
         this.noGameFound = false;
         ground.set({
             fen: this.fen,
+            check: chess.in_check(),
             turnColor: toColor(chess),
             lastMove: undefined,
-            check: chess.in_check(),
             selected: undefined,
             movable: {
-                color: toColor(chess),
-                dests: toDests(chess)
+                color: undefined,
+                dests: undefined,
             }
         });
-        Alpine.store("settings").selectColor(toColor(chess));
+
+        if (Alpine.store("settings").playerColor === toColor(chess)) {
+            ground.set({
+                movable: {
+                    color: toColor(chess),
+                    dests: toDests(chess),
+                }
+            });
+        } else {
+            await lichessOpeningPlay(ground, chess, 500)();
+        }
     }
 })
 
