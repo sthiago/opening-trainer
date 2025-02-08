@@ -8,7 +8,7 @@
     "license": "GPL-3.0",
     "scripts": {
         "start": "parcel",
-        "build": "parcel build",
+        "build": "parcel build --public-url replacethiswithdot && sed -i 's/replacethiswithdot/./g' dist/index.html",
         "clean": "rm -rf .parcel-cache/ && rm -rf dist/"
     },
     "dependencies": {
