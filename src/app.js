@@ -9,11 +9,14 @@ import SoundMoveOGG from "url:./sound/LichessMove.ogg";
 import SoundMoveMP3 from "url:./sound/LichessMove.mp3";
 import SoundCaptureOGG from "url:./sound/LichessCapture.ogg";
 import SoundCaptureMP3 from "url:./sound/LichessCapture.mp3";
+import SoundGenericNotifyOGG from "url:./sound/LichessGenericNotify.ogg";
+import SoundGenericNotifyMP3 from "url:./sound/LichessGenericNotify.mp3";
 
 const DEFAULT_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 const SoundMove = new Howl({ src: [ SoundMoveOGG, SoundMoveMP3 ] });
 const SoundCapture = new Howl({ src: [ SoundCaptureOGG, SoundCaptureMP3 ] });
+const SoundGenericNotify = new Howl({ src: [ SoundGenericNotifyOGG, SoundGenericNotifyMP3 ] });
 
 function toDests(chess) {
     const dests = new Map();
@@ -171,6 +174,9 @@ function lichessOpeningPlay(cg, chess, delay = 0) {
             });
             Alpine.store("state").updateState();
         } else {
+            if (Alpine.store("settings").enableSounds) {
+                SoundGenericNotify.play();
+            }
             Alpine.store("state").noGameFound = true;
         }
         Alpine.store("state").isThinking = false;
