@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="sidebar flex flex-col w-44 gap-2 mt-1">
-        <div class="movelist font-mono border border-slate-500 overflow-scroll break-words flex flex-col-reverse px-4">
+        <div class="movelist font-mono border border-slate-500 overflow-auto break-words flex flex-col-reverse px-4">
           <template x-if="$store.state.isThinking">
             <div class="mb-2">
               <svg class="animate-spin size-5 w-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -262,7 +262,7 @@
     <script>
       kofiWidgetOverlay.draw('sthiago', {
         'type': 'floating-chat',
-        'floating-chat.donateButton.text': 'Support me 🫰🏻',
+        'floating-chat.donateButton.text': 'Support me',
         'floating-chat.donateButton.background-color': '#00b9fe',
         'floating-chat.donateButton.text-color': '#fff'
       });
